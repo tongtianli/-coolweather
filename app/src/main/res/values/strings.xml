@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CoolWeather</string>
+    <string name="app_name">酷欧天气</string>
     <string name="key">&amp;key=03553d2ff1a14604bae1d5cf314b4fb9</string>
     <string name="weather_url">http://guolin.tech/api/weather?cityid=</string>
     <string name="bing_pic_url">http://guolin.tech/api/bing_pic</string>
