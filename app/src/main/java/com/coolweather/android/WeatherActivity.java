@@ -5,6 +5,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.coolweather.android.gson.Forecast;
 import com.coolweather.android.gson.Weather;
+import com.coolweather.android.service.AutoUpdateService;
 import com.coolweather.android.util.HttpUtil;
 import com.coolweather.android.util.Utility;
 
@@ -116,7 +118,7 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     private void loadBingPic() {
-        String requestBingPic = "http://guolin.tech/api/bing_pic";
+        String requestBingPic = getString(R.string.bing_pic_url);
         HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -141,8 +143,9 @@ public class WeatherActivity extends AppCompatActivity {
 
     public void requestWeather(final String weatherId) {
         String key = getString(R.string.key);
-        String weatherUrl = "http://guolin.tech/api/weather?cityid="+weatherId+"&key="+key;
-        HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
+        String weatherUrl = getString(R.string.weather_url);
+        String url = weatherUrl + weatherId + key;
+        HttpUtil.sendOkHttpRequest(url, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
@@ -206,5 +209,8 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+
+        Intent startAutoUpdateService = new Intent(this, AutoUpdateService.class);
+        startService(startAutoUpdateService);
     }
 }
